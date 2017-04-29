@@ -37,14 +37,10 @@ public class BluetoothStatus extends Service{
 	        super.onCreate();
             IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
             filter.addAction(Intent.ACTION_SCREEN_OFF);
+            filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+            filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+            filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
             this.registerReceiver(mReceiver, filter);
-	        IntentFilter filter1 = new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED);
-	        IntentFilter filter2 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
-	        IntentFilter filter3 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-	        this.registerReceiver(mReceiver, filter1);
-	        this.registerReceiver(mReceiver, filter2);
-	        this.registerReceiver(mReceiver, filter3);
-//		    out = (TextView) findViewById(R.id.out);
 		    KeyguardManager keyguardManager = (KeyguardManager)getSystemService(KEYGUARD_SERVICE);
 	  	    lock = keyguardManager.newKeyguardLock(KEYGUARD_SERVICE);
 	  	    Log.i("Service ", "Starting");
@@ -68,32 +64,33 @@ public class BluetoothStatus extends Service{
 		                screenOff = false;
 		                 
 		            }
-		          if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-		        	  
-		          }
-		          else if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-//		        	  out.append("\nAdapter: " + device.getName());
-//		        	  getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		        	  
-		        	  lock.disableKeyguard();
-		        	  intent.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		        	  
+		          if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+		              final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, BluetoothAdapter.ERROR);
+		              switch(state) {
+		                  case BluetoothAdapter.STATE_OFF:
+		                	  Log.i("Bluetooth ", "off");
+		                      break;
+		                  case BluetoothAdapter.STATE_TURNING_OFF:
+		                	  Log.i("Bluetooth ", "turning off");
+		                      break;
+		                  case BluetoothAdapter.STATE_ON:
+		                	  Log.i("Bluetooth ", "on");
+		                      break;
+		                  case BluetoothAdapter.STATE_TURNING_ON:
+		                	  Log.i("Bluetooth ", "turning on");
+		                      break;
+		              }
 
-		        	  Log.i("Bluetooth", "Disable");
 		          }
-		          else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-		             
+		          switch (action){
+		            case BluetoothDevice.ACTION_ACL_CONNECTED:
+		            	 Log.i("Bluetooth ", "device connected");
+		                break;
+		            case BluetoothDevice.ACTION_ACL_DISCONNECTED:
+		            	 Log.i("Bluetooth ", "device disconnected");
+		                break;
 		          }
-		          else if (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(action)) {
-		        	 lock.reenableKeyguard();
-		        	 Log.i("Bluetooth", "Enable");
-//		        	 intent.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		          }
-		          else if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-		             lock.reenableKeyguard();
-		             Log.i("Bluetooth", "Enable");
-//		             intent.(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		          }           
+		          
 		      }
 		  };
 

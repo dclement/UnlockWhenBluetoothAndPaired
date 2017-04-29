@@ -32,60 +32,7 @@ public class MainActivity extends Activity {
 	    setContentView(R.layout.activity_main);
 	    Intent i = new Intent(this, BluetoothStatus.class);
         startService(i);     // we start B here
-	    
-        
-//	     
-//	    // Getting the Bluetooth adapter
-//	    btAdapter = BluetoothAdapter.getDefaultAdapter();
-//	    out.append("\nAdapter: " + btAdapter);
-//	     
-//	    CheckBTState();
-	  }
-	     
-	
-	  
-	  
-//	  /* This routine is called when an activity completes.*/
-//	  @Override
-//	  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//	    super.onActivityResult(requestCode, resultCode, data);
-////	    if (requestCode == REQUEST_ENABLE_BT) {
-////	      CheckBTState();
-////	    }
-//	  }
-//	 
-//	  @Override
-//	  protected void onDestroy() {
-//	    super.onDestroy();
-//	  }
-
-//	  private void CheckBTState() {
-//	    // Check for Bluetooth support and then check to make sure it is turned on
-//	    // If it isn't request to turn it on
-//	    // List paired devices
-//	    // Emulator doesn't support Bluetooth and will return null
-//	    if(btAdapter==null) { 
-//	      out.append("\nBluetooth NOT supported. Aborting.");
-//	      return;
-//	    } else {
-//	      if (btAdapter.isEnabled()) {
-//	        out.append("\nBluetooth is enabled...");
-//	         
-//	        // Listing paired devices
-//	        out.append("\nPaired Devices:");
-//	        Set<BluetoothDevice> devices = btAdapter.getBondedDevices();
-//	        for (BluetoothDevice device : devices) {
-//	          out.append("\n  Device: " + device.getName() + ", " + device);
-//	        }
-//	      } else {
-//	        //Prompt user to turn on Bluetooth
-//	        Intent enableBtIntent = new Intent(btAdapter.ACTION_REQUEST_ENABLE);
-//	        startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-//	      }
-//	    }
-//	  }
-	  
-	     
+	  }	     
 }
 
 
